@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  booking:
+    build:
+      context: .
+    container_name: booking
+    volumes:
+      - .:/booking
+    env_file:
+      - ./.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+    command: python manage.py runserver
+    restart: always
+      
+  postgres:
+    image: postgres
+    restart: always
+    volumes:
+      - pgdatabooking:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=booking
+
+volumes:
+  pgdatabooking:
+
