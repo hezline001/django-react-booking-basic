@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { userContext } from "../../store/UserContext"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export function Navbar({title=''}){
     let user = useContext(userContext)
