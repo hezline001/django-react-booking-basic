@@ -93,6 +93,8 @@ def space_action(request):
         print(data)
         if data.get('action') == 'approve':
             slot = Slot.objects.get(id=data.get('id'))
+            slot.space.filled_slots = slot.space.filled_slots+1
+            slot.space.save()
             data = {'status':'booked'}
             serializer = SlotSerializer(instance=slot,data=data,partial=True)
             if serializer.is_valid():
@@ -108,6 +110,9 @@ def space_action(request):
 def slot_destry(request,pk):
     try:
         slot = Slot.objects.get(id=pk)
+        if slot.space.filled_slots != 0:
+            slot.space.filled_slots = slot.space.filled_slots-1
+            slot.space.save()
         slot.delete()
         return Response(data=None,status=status.HTTP_200_OK)
     except:

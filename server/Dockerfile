@@ -6,6 +6,8 @@ RUN apt-get update
 
 WORKDIR /booking
 
-COPY req.txt req.txt
+COPY ./src .
 
 RUN pip install -r req.txt
+
+# RUN python manage.py migrate

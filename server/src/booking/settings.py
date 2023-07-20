@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import environ
-env = environ.Env()
 from django.contrib.auth import login
+# env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, './.env'))
@@ -49,9 +49,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware", 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -95,7 +95,7 @@ DATABASES = {
 
         'PASSWORD': os.environ.get('DB_PASS'),
 
-        'HOST': 'localhost',
+        'HOST': 'postgres-service',
 
         'PORT': '5432',
 
@@ -146,13 +146,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.MyUser'
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'https://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1',
-    'http://localhost',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',
+#     'https://localhost:3000',
+#     'http://127.0.0.1:3000',
+#     'http://127.0.0.1',
+#     'http://localhost',
+#     'http://react',
+#     'http://react:3000',
+#     'http://booking-backend',
+#     'http://booking-backend:8000',
+# ]
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -167,6 +171,7 @@ CORS_ALLOW_METHODS = [
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'http://react:3000'
 ]
 
 
@@ -177,11 +182,9 @@ AUTHENTICATION_BACKENDS = [
 CSRF_COOKIE_SECURE = False
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://react:3000',
 ]
-
-
-
 
 
 #cacheeeeeeeeeeee
@@ -189,7 +192,9 @@ CSRF_TRUSTED_ORIGINS = [
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://myuser:mypass@localhost:6379",
+        "LOCATION": "redis://myuser:mypass@redis-service:6379",
         "TIMEOUT": 300,
     }
 }
+
+CORS_ALLOW_ALL_ORIGINS = True

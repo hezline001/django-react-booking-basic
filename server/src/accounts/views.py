@@ -78,7 +78,7 @@ def admin_login(request):
         try:
             user = authenticate(email = email, password = password)
             if not user.is_staff:
-                return Response(data='You dont not have permission',status=status.HTTP_401_UNAUTHORIZED)
+                return Response(data='You dont not have permissiondgdfgdgdgdgd',status=status.HTTP_401_UNAUTHORIZED)
             else:
                 serializer = MyUserSerializer(instance=user)
                 payload = serializer.data

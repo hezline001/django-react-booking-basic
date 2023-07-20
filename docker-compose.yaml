@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  booking-backend:
+    build:
+      context: server
+    # volumes:
+    #   - .:/booking
+    env_file:
+      - ./server/.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres-service
+      - redis-service
+    command: >
+      bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    restart: always
+      
+  postgres-service:
+    image: postgres
+    restart: always
+    volumes:
+      - pgdatabooking:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgrespass
+      - POSTGRES_DB=booking
+  redis-service:
+    image: redis
+    build: 
+      context: redis
+    ports:
+      - 6379:6379
+  react:
+    build:
+      context: client
+    ports:
+      - 3000:3000
+    command: npm start
+    depends_on:
+      - booking-backend
+
+volumes:
+  pgdatabooking:
+
